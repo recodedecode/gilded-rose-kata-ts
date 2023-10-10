@@ -12,5 +12,6 @@ export interface IInventoryManager {
 export enum Rules {
   AgedBrie = 'Aged Brie',
   BackstagePasses = 'Backstage passes to a TAFKAL80ETC concert',
+  Conjured = 'Conjured',
   SulfurasHandOfRagnaros = 'Sulfuras, Hand of Ragnaros'
 }

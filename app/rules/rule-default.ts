@@ -6,6 +6,7 @@ export const ruleDefault = (curr: IInventoryItem) => {
 
   if (curr.name === Rules.AgedBrie
       || curr.name === Rules.BackstagePasses
+      || curr.name === Rules.Conjured
       || curr.name === Rules.SulfurasHandOfRagnaros) {
     return curr
   }

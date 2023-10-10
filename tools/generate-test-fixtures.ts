@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { Item, GildedRose } from '../app/gilded-rose'
+import { Item, GildedRose } from '../app'
 
 
 type TestFixtureArg = {
@@ -40,7 +40,6 @@ const main = async () => {
   let totalTests = 0
 
   for (const name of names) {
-    console.log('name: ', name)
 
     const group: CategoryFixture = {
       name,
