@@ -1,5 +1,6 @@
-import { Item, GildedRose } from '@/gilded-rose'
+import { Item, GildedRose } from '@/index'
 import fixtures from './fixtures.json'
+
 
 describe('Gilded Rose', () => {
 

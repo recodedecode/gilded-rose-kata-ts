@@ -4,8 +4,9 @@
   "description": "Gilded Rose kata in TypeScript",
   "scripts": {
     "precompile": "rimraf app/**/*.js test/**/*.js",
-    "compile": "tsc",
+    "compile": "tsc ./app/*.ts --outDir ./dist",
     "pretest": "rimraf app/**/*.js test/**/*.js",
+    "bench": "node ./test/gilded-rose.bench",
     "test:gen:fixtures": "ts-node ./tools/generate-test-fixtures.ts",
     "test": "jest",
     "test:watch": "jest --watchAll"
@@ -22,5 +23,8 @@
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.2",
     "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "benny": "^3.7.1"
   }
 }
