@@ -1,6 +1,12 @@
 import { IInventoryItem, IInventoryManager } from './types'
 
 
+enum RuleTypes {
+  AgedBrie = 'Aged Brie',
+  BackstagePasses = 'Backstage passes to a TAFKAL80ETC concert',
+  SulfurasHandOfRagnaros = 'Sulfuras, Hand of Ragnaros'
+}
+
 export class GildedRose implements IInventoryManager {
 
   items: IInventoryItem[]
@@ -12,57 +18,85 @@ export class GildedRose implements IInventoryManager {
   }
 
   updateQuality () {
+
     for (let i = 0; i < this.items.length; i++) {
-      if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-        if (this.items[i].quality > 0) {
-          if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-            this.items[i].quality = this.items[i].quality - 1
-          }
-        }
-      }
-      else {
-        if (this.items[i].quality < 50) {
-          this.items[i].quality = this.items[i].quality + 1
-          if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
-            if (this.items[i].sellIn < 11) {
-              if (this.items[i].quality < 50) {
-                this.items[i].quality = this.items[i].quality + 1
-              }
-            }
-            if (this.items[i].sellIn < 6) {
-              if (this.items[i].quality < 50) {
-                this.items[i].quality = this.items[i].quality + 1
-              }
-            }
-          }
-        }
-      }
-    
-      if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-        this.items[i].sellIn = this.items[i].sellIn - 1
-      }
-    
-      if (this.items[i].sellIn < 0) {
-        if (this.items[i].name != 'Aged Brie') {
-          if (this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-            if (this.items[i].quality > 0) {
-              if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-                this.items[i].quality = this.items[i].quality - 1
-              }
-            }
-          }
-          else {
-            this.items[i].quality = this.items[i].quality - this.items[i].quality
-          }
-        }
-        else {
-          if (this.items[i].quality < 50) {
-            this.items[i].quality = this.items[i].quality + 1
-          }
-        }
-      }
+      const item = this.items[i]
+      this.items[i] = applyRules(item)
     }
 
     return this.items
   }
+}
+
+const applyRules = (item: IInventoryItem): IInventoryItem => {
+  switch (item.name) {
+    case RuleTypes.AgedBrie:
+      return agedBrieRule(item)
+    case RuleTypes.BackstagePasses:
+      return backStagePassRule(item)
+    case RuleTypes.SulfurasHandOfRagnaros:
+      return sulfurasRule(item)
+  }
+  return defaultRule(item)
+}
+
+const agedBrieRule = (item: IInventoryItem): IInventoryItem => {
+
+  if (item.quality < 50) {
+    item.quality = item.quality + 1
+  }
+
+  item.sellIn = item.sellIn - 1
+
+  if (item.sellIn < 0 && item.quality < 50) {
+    item.quality = item.quality + 1
+  }
+
+  return item
+}
+
+const backStagePassRule = (item: IInventoryItem): IInventoryItem => {
+
+  if (item.quality < 50) {
+    item.quality = item.quality + 1
+    if (item.sellIn < 11) {
+      if (item.quality < 50) {
+        item.quality = item.quality + 1
+      }
+    }
+    if (item.sellIn < 6) {
+      if (item.quality < 50) {
+        item.quality = item.quality + 1
+      }
+    }
+  }
+
+  item.sellIn = item.sellIn - 1
+
+  if (item.sellIn < 0) {
+    item.quality = item.quality - item.quality
+  }
+
+  return item
+}
+
+const sulfurasRule = (item: IInventoryItem): IInventoryItem => {
+  return item
+}
+
+const defaultRule = (item: IInventoryItem): IInventoryItem => {
+
+  if (item.quality > 0) {
+    item.quality = item.quality - 1
+  }
+
+  item.sellIn = item.sellIn - 1
+
+  if (item.sellIn < 0) {
+    if (item.quality > 0) {
+      item.quality = item.quality - 1
+    }
+  }
+
+  return item
 }
