@@ -6,6 +6,7 @@
     "precompile": "rimraf app/**/*.js test/**/*.js",
     "compile": "tsc",
     "pretest": "rimraf app/**/*.js test/**/*.js",
+    "test:gen:fixtures": "ts-node ./tools/generate-test-fixtures.ts",
     "test": "jest",
     "test:watch": "jest --watchAll"
   },
